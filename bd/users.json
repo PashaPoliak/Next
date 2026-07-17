@@ -1,1 +1,30 @@
-[{"name":null,"email":"admin@email.com","password":"admin123","role":"admin","id":"85aa767d-73c0-4e23-9a02-27902d418b37"},{"name":"Test User","email":"user@email.com","password":"user123","role":"user","id":"f1e5fd00-803f-4cc3-893c-37a88fc330fc"}]
+[
+  {
+    "name": "Admin User",
+    "email": "admin@email.com",
+    "password": "admin123",
+    "role": "admin",
+    "id": "85aa767d-73c0-4e23-9a02-27902d418b37"
+  },
+  {
+    "name": "Test User",
+    "email": "user@email.com",
+    "password": "user123",
+    "role": "user",
+    "id": "f1e5fd00-803f-4cc3-893c-37a88fc330fc"
+  },
+  {
+    "name": "John Admin",
+    "email": "john.admin@example.com",
+    "password": "adminpass123",
+    "role": "admin",
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  },
+  {
+    "name": "Jane Student",
+    "email": "jane.student@example.com",
+    "password": "studentpass123",
+    "role": "user",
+    "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901"
+  }
+]

@@ -1,1 +1,44 @@
-[{"title":"title","description":"description","creationDate":"9/3/2021","duration":30,"authors":["9b87e8b8-6ba5-40fc-a439-c4e30a373d36"],"id":"66cc289e-6de9-49b2-9ca7-8b4f409d6467"}]
+[
+  {
+    "title": "Introduction to JavaScript",
+    "description": "Learn the fundamentals of JavaScript programming language including variables, functions, and objects",
+    "creationDate": "1/15/2023",
+    "duration": 30,
+    "authors": [
+      "9b87e8b8-6ba5-40fc-a439-c4e30a373d36"
+    ],
+    "id": "66cc289e-6de9-49b2-9ca7-8b4f409d6467"
+  },
+  {
+    "title": "Advanced React Development",
+    "description": "Master React hooks, context API, and performance optimization techniques",
+    "creationDate": "3/22/2023",
+    "duration": 45,
+    "authors": [
+      "1c972c52-3198-4098-b6f7-799b45903199",
+      "072fe3fc-e751-4745-9af5-aa9eed0ea9ed"
+    ],
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  },
+  {
+    "title": "Node.js Backend Masterclass",
+    "description": "Build scalable REST APIs with Node.js, Express, and PostgreSQL",
+    "creationDate": "6/10/2023",
+    "duration": 50,
+    "authors": [
+      "40b21bd5-cbae-4f33-b154-0252b1ae03a9"
+    ],
+    "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901"
+  },
+  {
+    "title": "TypeScript Fundamentals",
+    "description": "Complete guide to TypeScript including types, interfaces, and advanced features",
+    "creationDate": "9/5/2023",
+    "duration": 25,
+    "authors": [
+      "5e0b0f18-32c9-4933-b142-50459b47f09e",
+      "9987de6a-b475-484a-b885-622b8fb88bda"
+    ],
+    "id": "c3d4e5f6-a7b8-9012-cdef-123456789012"
+  }
+]

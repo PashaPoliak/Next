@@ -1,7 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
-
-import * as path from 'path';
-import { Observable } from 'rxjs';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Observable, from } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import {
   FailedRequest,
@@ -10,41 +11,49 @@ import {
 } from '@models/common.models';
 
 import { ModelValidation } from '@helpers/decorators';
-import {
-  addItem,
-  deleteItem,
-  editItem,
-  getAllItems,
-  getItem,
-} from '@helpers/items.helpers';
-
-import { FILES_FOLDER } from '@core/core-module.config';
 
 import { Author, AuthorModel } from './authors.models';
 
 @Injectable()
 export class AuthorsService {
-  private readonly filePath = path.join(this.filesFolder, 'authors.json');
-
-  constructor(@Inject(FILES_FOLDER) private filesFolder: string) {}
+  constructor(
+    @InjectRepository(Author)
+    private authorRepository: Repository<Author>,
+  ) {}
 
   getAllAuthors(): Observable<
     SuccessfulRequest<ItemModel[] | string> | FailedRequest
   > {
-    return getAllItems(this.filePath);
+    return from(this.authorRepository.find()).pipe(
+      map((result) => ({
+        successful: true,
+        result: result as any,
+      })),
+    );
   }
 
   getAuthor(
     id: string,
   ): Observable<SuccessfulRequest<ItemModel | string> | FailedRequest> {
-    return getItem(id, this.filePath);
+    return from(this.authorRepository.findOne(id)).pipe(
+      map((result) => ({
+        successful: true,
+        result: result as any,
+      })),
+    );
   }
 
   @ModelValidation<AuthorModel, Author>(Author)
   addAuthor(
     author: AuthorModel,
   ): Observable<SuccessfulRequest<string | ItemModel> | FailedRequest> {
-    return addItem(author, this.filePath);
+    const newAuthor = this.authorRepository.create(author);
+    return from(this.authorRepository.save(newAuthor)).pipe(
+      map((result) => ({
+        successful: true,
+        result: result as any,
+      })),
+    );
   }
 
   @ModelValidation<AuthorModel, Author>(Author)
@@ -52,12 +61,26 @@ export class AuthorsService {
     author: AuthorModel,
     id: string,
   ): Observable<SuccessfulRequest<string> | FailedRequest> {
-    return editItem(author, id, this.filePath);
+    return from(
+      this.authorRepository.update(id, author).then(() => 'Author updated'),
+    ).pipe(
+      map((result) => ({
+        successful: true,
+        result,
+      })),
+    );
   }
 
   deleteAuthor(
     id: string,
   ): Observable<SuccessfulRequest<string> | FailedRequest> {
-    return deleteItem(id, this.filePath);
+    return from(
+      this.authorRepository.delete(id).then(() => 'Author deleted'),
+    ).pipe(
+      map((result) => ({
+        successful: true,
+        result,
+      })),
+    );
   }
 }

@@ -1,12 +1,21 @@
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { ValueWithRequiredState } from '@models/common.models';
 
 import { getValidityStateOfModel, isString } from '@helpers/common.helpers';
 
+@Entity('authors')
 export class Author implements AuthorModelWithRequiredState {
-  name: ValueWithRequiredState<string>;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column()
+  name: string;
+
+  nameValidation: ValueWithRequiredState<string>;
 
   constructor({ name = null }: AuthorModel) {
-    this.name = {
+    this.name = name;
+    this.nameValidation = {
       value: name,
       required: true,
       isValid: (name: string) => name && isString(name),
@@ -20,7 +29,7 @@ export class Author implements AuthorModelWithRequiredState {
 }
 
 interface AuthorModelWithRequiredState {
-  name: ValueWithRequiredState<string>;
+  nameValidation: ValueWithRequiredState<string>;
 }
 
 export interface AuthorModel {
