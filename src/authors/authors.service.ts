@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Connection } from 'typeorm';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -11,20 +10,16 @@ import {
 } from '@models/common.models';
 
 import { ModelValidation } from '@helpers/decorators';
-
 import { Author, AuthorModel } from './authors.models';
 
 @Injectable()
 export class AuthorsService {
-  constructor(
-    @InjectRepository(Author)
-    private authorRepository: Repository<Author>,
-  ) {}
+  constructor(private connection: Connection) {}
 
   getAllAuthors(): Observable<
     SuccessfulRequest<ItemModel[] | string> | FailedRequest
   > {
-    return from(this.authorRepository.find()).pipe(
+    return from(this.connection.query('SELECT * FROM authors')).pipe(
       map((result) => ({
         successful: true,
         result: result as any,
@@ -35,10 +30,12 @@ export class AuthorsService {
   getAuthor(
     id: string,
   ): Observable<SuccessfulRequest<ItemModel | string> | FailedRequest> {
-    return from(this.authorRepository.findOne(id)).pipe(
+    return from(
+      this.connection.query('SELECT * FROM authors WHERE id = $1 LIMIT 1', [id]),
+    ).pipe(
       map((result) => ({
         successful: true,
-        result: result as any,
+        result: (result[0] || null) as any,
       })),
     );
   }
@@ -47,11 +44,16 @@ export class AuthorsService {
   addAuthor(
     author: AuthorModel,
   ): Observable<SuccessfulRequest<string | ItemModel> | FailedRequest> {
-    const newAuthor = this.authorRepository.create(author);
-    return from(this.authorRepository.save(newAuthor)).pipe(
+    const id = (author as any).id || require('crypto').randomUUID();
+    return from(
+      this.connection.query(
+        'INSERT INTO authors (id, name) VALUES ($1, $2) RETURNING *',
+        [id, author.name],
+      ),
+    ).pipe(
       map((result) => ({
         successful: true,
-        result: result as any,
+        result: result[0] as any,
       })),
     );
   }
@@ -62,11 +64,14 @@ export class AuthorsService {
     id: string,
   ): Observable<SuccessfulRequest<string> | FailedRequest> {
     return from(
-      this.authorRepository.update(id, author).then(() => 'Author updated'),
+      this.connection.query('UPDATE authors SET name = $1 WHERE id = $2', [
+        author.name,
+        id,
+      ]),
     ).pipe(
-      map((result) => ({
+      map(() => ({
         successful: true,
-        result,
+        result: 'Author updated',
       })),
     );
   }
@@ -75,11 +80,11 @@ export class AuthorsService {
     id: string,
   ): Observable<SuccessfulRequest<string> | FailedRequest> {
     return from(
-      this.authorRepository.delete(id).then(() => 'Author deleted'),
+      this.connection.query('DELETE FROM authors WHERE id = $1', [id]),
     ).pipe(
-      map((result) => ({
+      map(() => ({
         successful: true,
-        result,
+        result: 'Author deleted',
       })),
     );
   }

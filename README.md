@@ -9,7 +9,7 @@ This project was created for educational purposes and is used as a back-end for 
 $ npm run start
 
 # watch mode
-$ npm run start:dev
+npm run start:dev
 
 # production mode
 $ npm run start:prod
@@ -26,6 +26,8 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
+
+npm install sqlite3 --save
 ```
 
 ## Deploy to Render

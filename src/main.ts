@@ -1,3 +1,7 @@
+import * as util from 'util';
+(util as any).isNullOrUndefined = (value: any) => value === null || value === undefined;
+(util as any).isObject = (value: any) => value !== null && typeof value === 'object';
+
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
