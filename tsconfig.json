@@ -14,12 +14,13 @@
     "incremental": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "paths" : {
+    "paths": {
       "@helpers/*": ["src/helpers/*"],
       "@models/*": ["src/models/*"],
       "@core/*": ["src/core/*"],
       "@auth/*": ["src/auth/*"],
       "@swagger/*": ["swagger/*"]
     }
-  }
+  },
+  "exclude": ["node_modules", "dist"]
 }
