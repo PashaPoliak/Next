@@ -1,5 +1,4 @@
 import * as path from 'path';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 import { ValueWithRequiredState } from '@models/common.models';
 
@@ -11,32 +10,11 @@ import {
 } from '@helpers/common.helpers';
 import { areAllItemsExist } from '@helpers/items.helpers';
 
-@Entity('courses')
 export class Course implements CourseModelWithRequiredState {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @Column()
-  title: string;
-
-  @Column()
-  description: string;
-
-  @Column()
-  duration: number;
-
-  @Column()
-  authors: string;
-
-  @Column()
-  creationDate: string;
-
-  // For validation purposes
-  titleValidation: ValueWithRequiredState<string>;
-  descriptionValidation: ValueWithRequiredState<string>;
-  durationValidation: ValueWithRequiredState<number>;
-  authorsValidation: ValueWithRequiredState<string[]>;
-
+  title: ValueWithRequiredState<string>;
+  description: ValueWithRequiredState<string>;
+  duration: ValueWithRequiredState<number>;
+  authors: ValueWithRequiredState<string[]>;
   filePath: string = path.join(bdMainPath, 'authors.json');
 
   constructor(
@@ -45,7 +23,6 @@ export class Course implements CourseModelWithRequiredState {
       description = null,
       duration = null,
       authors = null,
-      creationDate = null,
     }: CourseModel,
     {
       titleRequired = true,
@@ -54,31 +31,25 @@ export class Course implements CourseModelWithRequiredState {
       authorsRequired = true,
     }: { [key: string]: boolean } = {},
   ) {
-    this.title = title;
-    this.description = description;
-    this.duration = duration;
-    this.authors = authors ? authors.join(',') : null;
-    this.creationDate = creationDate;
-
-    this.titleValidation = {
+    this.title = {
       value: title,
       required: titleRequired,
       isValid: (title: string) => title && isString(title),
       type: 'string',
     };
-    this.descriptionValidation = {
+    this.description = {
       value: description,
       required: descriptionRequired,
       isValid: (description: string) => description && isString(description),
       type: 'string',
     };
-    this.durationValidation = {
+    this.duration = {
       value: duration,
       required: durationRequired,
       isValid: (duration: number) => duration && isNumber(duration),
       type: 'number',
     };
-    this.authorsValidation = {
+    this.authors = {
       value: authors,
       required: authorsRequired,
       isValid: (authors: string[]) =>
@@ -95,10 +66,10 @@ export class Course implements CourseModelWithRequiredState {
 }
 
 interface CourseModelWithRequiredState {
-  titleValidation: ValueWithRequiredState<string>;
-  descriptionValidation: ValueWithRequiredState<string>;
-  durationValidation: ValueWithRequiredState<number>;
-  authorsValidation: ValueWithRequiredState<string[]>;
+  title: ValueWithRequiredState<string>;
+  description: ValueWithRequiredState<string>;
+  duration: ValueWithRequiredState<number>;
+  authors: ValueWithRequiredState<string[]>;
 }
 
 export interface CourseModel {
