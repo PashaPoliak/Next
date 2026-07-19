@@ -23,6 +23,7 @@ const isDevelopment = process.env.NODE_ENV === 'development' || !process.env.DAT
             database: process.env.DATABASE_DB,
             autoLoadEntities: true,
             synchronize: true,
+            logging: true,
             ssl: {
               rejectUnauthorized: false,
             },

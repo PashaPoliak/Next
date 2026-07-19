@@ -1,6 +1,13 @@
 [
   {
     "name": "Admin User",
+    "email": "admin@i.ua",
+    "password": "admin",
+    "role": "admin",
+    "id": "85aa767d-73c0-4e23-9a02-27902d418b37"
+  },
+  {
+    "name": "Admin User",
     "email": "admin@email.com",
     "password": "admin123",
     "role": "admin",

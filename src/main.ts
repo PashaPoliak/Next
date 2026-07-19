@@ -4,6 +4,7 @@ import * as util from 'util';
 
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { getConnection } from 'typeorm';
 
 import { METADATA_AUTHORIZED_KEY } from '@core/core-module.config';
 
@@ -12,6 +13,17 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  try {
+    const connection = getConnection();
+    console.log('Starting database migrations...');
+    await connection.runMigrations();
+    console.log('Migrations completed successfully.');
+  } catch (error) {
+    console.error('Migration execution failed:', error);
+    process.exit(1);
+  }
+
   const config = new DocumentBuilder()
     .setTitle(packageJson.name)
     .setVersion(packageJson.version)
